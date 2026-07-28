@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>메인</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="manifest" th:href="@{/manifest.json}">
+    <link rel="apple-touch-icon" th:href="@{/image/icon-192.png}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#336699">
+    <script th:src="@{/js/pwa-register.js}"></script>
+</head>
+<body>
+<div class="main-box">
+    <div class="title">
+        <h1>외근 현황</h1>
+<!--        <h2>현재 진행중인 일정</h2>-->
+    </div>
+
+    <div class="stat-bar" th:unless="${mainList == null or #lists.isEmpty(mainList)}">
+        <div class="stat">
+            <span class="n" th:text="${#lists.size(mainList)}">0</span>
+            <span class="l">전체 외근 인원</span>
+        </div>
+        <div class="stat st-transit">
+            <span class="n" th:text="${#lists.size(mainList.?[workStatus == '이동중'])}">0</span>
+            <span class="l">이동중</span>
+        </div>
+        <div class="stat st-active">
+            <span class="n" th:text="${#lists.size(mainList.?[workStatus == '진행중'])}">0</span>
+            <span class="l">진행중</span>
+        </div>
+        <div class="stat st-leave" th:unless="${vacationList == null or #lists.isEmpty(vacationList)}">
+            <span class="n" th:text="${#lists.size(vacationList)}">0</span>
+            <span class="l">휴가</span>
+        </div>
+    </div>
+
+    <th:block th:if="${mainList == null or #lists.isEmpty(mainList)}">
+        <div style="margin: auto; font-size: 50px; margin-top: 150px; width: 100%; height: 300px; display: flex; justify-content: center;">
+            등록된 외근 일정이 없습니다.
+        </div>
+
+        <th:block th:if="${vacationList == null or #lists.isEmpty(vacationList)}">
+        </th:block>
+        <th:block th:unless="${vacationList == null or #lists.isEmpty(vacationList)}">
+            <div style="margin-top: 30px; font-family: cafe24air; width: 100%;">
+                <h2>휴가자</h2>
+                <div style="display: flex;">
+                    <div class="list2" th:each="vacationList : ${vacationList}">
+                        <li class="point3">●</li>
+                        <li class="username2"><span th:text="${vacationList.memberName}"/></li>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+    </th:block>
+
+    <div style="width: 100%; height: 600px;">
+    <th:block th:if="${mainList.size() <= 6 and mainList.size() >= 1}">
+
+        <div class="box-main">
+            <div class="sub-box" th:each="mainList : ${mainList}">
+                <div class="list1" th:classappend="${mainList.workStatus == '이동중'} ? 'st-transit' : 'st-active'">
+                    <li class="status-chip" th:text="${mainList.workStatus}">이동중</li>
+                    <li class="username test"><span th:text="${mainList.memberName}"/> <span
+                            th:text="${mainList.memberRank +'님'}" class="member-rank"/></li>
+                    <li class="usertime test">
+                        <th:block th:if="${mainList.workStatus == '이동중'}">
+                        <span th:text="${mainList.workStartTime}"/> ~
+                        </th:block>
+                        <th:block th:unless="${mainList.workStatus == '이동중'}">
+                            <span th:text="${mainList.workRealStartTime}"/> ~
+                        </th:block>
+                        <span class="endTime" th:text="${mainList.workPredictTime}" th:if="${mainList.workPredictTime != null}"/></li>
+                    <li class="ow test"><span th:text="${mainList.workPlaceName}"/></li>
+                    <li class="work test"><span th:text="${mainList.workTitle}"/></li>
+                </div>
+            </div>
+        </div>
+        <th:block th:if="${vacationList == null or #lists.isEmpty(vacationList)}">
+        </th:block>
+        <th:block th:unless="${vacationList == null or #lists.isEmpty(vacationList)}">
+        <div style="margin-top: 30px; font-family: cafe24air;">
+            <h2>휴가자</h2>
+            <div style="display: flex;">
+                <div class="list2" th:each="vacationList : ${vacationList}">
+                    <li class="point3">●</li>
+                    <li class="username2"><span th:text="${vacationList.memberName}"/></li>
+                </div>
+            </div>
+        </div>
+        </th:block>
+    </th:block>
+
+    <th:block th:unless="${mainList.size() <= 6}">
+        <div class="mainbox">
+            <div class="sub-box" th:each="mainList : ${mainList}" style="margin : 0 10px; width: 48%;">
+                <div class="list1" style="margin: 5px 10px;" th:classappend="${mainList.workStatus == '이동중'} ? 'st-transit' : 'st-active'">
+                    <li class="status-chip" th:text="${mainList.workStatus}">이동중</li>
+                    <li class="username test" style="width: 90px; margin : 0 20px 0 10px;"><span th:text="${mainList.memberName}"/></li>
+                    <th:block th:if="${mainList.workStatus == '이동중'}">
+                    <li class="usertime test" style="width: 195px; margin : 0 20px 0 10px"><span th:text="${mainList.workStartTime}"/> ~</li>
+                    </th:block>
+                    <th:block th:if="${mainList.workStatus == '진행중'}">
+                        <li class="usertime test" style="width: 195px; margin : 0 20px 0 10px"><span th:text="${mainList.workStartTime}"/> ~</li>
+                    </th:block>
+                    <li class="ow test" style="width: 295px; margin : 0 20px 0 10px"><span th:text="${mainList.workPlaceName}"/></li>
+                </div>
+            </div>
+        </div>
+        <th:block th:if="${vacationList == null or #lists.isEmpty(vacationList)}">
+        </th:block>
+        <th:block th:unless="${vacationList == null or #lists.isEmpty(vacationList)}">
+            <div style="width: 82%; margin-top: 25px; display: flex; flex-direction: column; align-content: center; align-items: flex-start;">
+                <h4 style="margin: 0;">휴가자</h4>
+                <div style="display: flex; justify-content: flex-start; margin: 0;">
+                    <div class="list2" th:each="vacationList : ${vacationList}">
+                        <li class="point3">●</li>
+                        <li class="username2"><span th:text="${vacationList.memberName}"/></li>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+    </th:block>
+    </div>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="/js/main.js"></script>
+</html>

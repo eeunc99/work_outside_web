@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds">
+	<property name="LOG_PATH" value="/work_outside_web/logs" />
+	<property name="LOG_FILE_NAME" value="work_boot_st" />
+	<property name="ERR_LOG_FILE_NAME" value="err_log_boot" />
+	<!-- 프로필별 로그 설정 -->
+	<springProfile name="local">
+		<!-- 쿼리 로그를 여러 줄로 표현 -->
+		<property name="LOG_PATTERN" value="%-5level %d{yy-MM-dd HH:mm:ss}[%thread] [%logger{0}:%line] - %msg%n" />
+	</springProfile>
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>UTF-8</charset>
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_PATH}/${LOG_FILE_NAME}.log</file>
+
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>UTF-8</charset>
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+	</appender>
+	<!-- 에러의 경우 파일에 로그 처리 -->
+	<appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>error</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		
+		<file>${LOG_PATH}/${ERR_LOG_FILE_NAME}.log</file>
+		
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>UTF-8</charset>
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+		
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/${ERR_LOG_FILE_NAME}.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<!-- 프로필별 로그 설정 -->
+	<springProfile name="local">
+		<!-- root 레벨 설정 -->
+		<root level="info">
+			<appender-ref ref="CONSOLE" />
+			<appender-ref ref="FILE" />
+			<appender-ref ref="ERROR" />
+		</root>	
+	</springProfile>
+
+	<!-- 프로필별 쿼리 로그 설정 -->
+	<springProfile name="local">
+		<logger name="jdbc.sqlonly" level="off"/>
+		<logger name="jdbc.sqltiming" level="debug"/>
+		<logger name="jdbc.audit" level="off"/>
+		<logger name="jdbc.resultset" level="off"/>
+		<logger name="jdbc.resultsettable" level="off"/>
+		<logger name="jdbc.connection" level="off"/>
+	</springProfile>
+</configuration>

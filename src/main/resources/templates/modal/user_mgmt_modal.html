@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/modal/user_mgmt_modal.css">
+</head>
+<body>
+<button class="modal-open">사원 추가</button>
+<button class="modal-open">사원 수정</button>
+<button class="modal-open">사원 삭제</button>
+
+<!-- 사원 등록 모달 -->
+<div class="modal-container">
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-title">
+                <span>사원 등록</span>
+                <div class="modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" data-name="Capa 1" id="Capa_1" viewBox="0 0 20 19.84">
+                        <path d="M10.17,10l3.89-3.89a.37.37,0,1,0-.53-.53L9.64,9.43,5.75,5.54a.37.37,0,1,0-.53.53L9.11,10,5.22,13.85a.37.37,0,0,0,0,.53.34.34,0,0,0,.26.11.36.36,0,0,0,.27-.11l3.89-3.89,3.89,3.89a.34.34,0,0,0,.26.11.35.35,0,0,0,.27-.11.37.37,0,0,0,0-.53Z" />
+                    </svg>
+                </div>
+            </div>
+            <div class="modal-major-content">
+                <div class="form-row">
+                    <span class="user-text">이름</span>
+                    <input type="text" class="user-input">
+                </div>
+                <div class="form-row">
+                    <span class="user-text">아이디</span>
+                    <input type="text" class="user-input">
+                </div>
+                <div class="form-row">
+                    <span class="user-text">비밀번호</span>
+                    <input type="password" class="user-input">
+                </div>
+                <div class="form-row">
+                    <span class="user-text">부서</span>
+                    <select class="user-input">
+                        <option value="">선택</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <span class="user-text">팀</span>
+                    <select class="user-input">
+                        <option value="">선택</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <span class="user-text">등급</span>
+                    <select class="user-input">
+                        <option value="관리자">관리자</option>
+                        <option value="팀장">팀장</option>
+                        <option value="수석 매니저">수석 매니저</option>
+                        <option value="매니저">매니저</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <span class="user-text">입사일</span>
+                    <input type="date" class="user-input">
+                </div>
+                <div class="form-row">
+                    <span class="user-text">휴가 개수</span>
+                    <input type="text" class="user-input">
+                </div>
+                <div class="form-row">
+                    <span class="user-text">초기화 기준</span>
+                    <select class="user-input">
+                        <option value="0">매년 1월 1일</option>
+                        <option value="1">입사일 기준</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-button">
+                <button type="button" class="modal-btn">등록</button>
+                <button type="button" class="modal-btn">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 사원 수정 모달 -->
+<div class="modal-container">
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-title">
+                <span>사원 수정</span>
+                <div class="modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" data-name="Capa 1" id="Capa_1" viewBox="0 0 20 19.84">
+                        <path d="M10.17,10l3.89-3.89a.37.37,0,1,0-.53-.53L9.64,9.43,5.75,5.54a.37.37,0,1,0-.53.53L9.11,10,5.22,13.85a.37.37,0,0,0,0,.53.34.34,0,0,0,.26.11.36.36,0,0,0,.27-.11l3.89-3.89,3.89,3.89a.34.34,0,0,0,.26.11.35.35,0,0,0,.27-.11.37.37,0,0,0,0-.53Z" />
+                    </svg>
+                </div>
+            </div>
+            <div class="modal-major-content">
+                <div class="form-row">
+                    <span class="user-text">이름</span>
+                    <input type="text" class="user-input">
+                </div>
+                <div class="form-row">
+                    <span class="user-text">아이디</span>
+                    <input type="text" class="user-input id" readonly>
+                </div>
+                <div class="form-row">
+                    <span class="user-text">비밀번호</span>
+                    <input type="password" class="user-input">
+                </div>
+                <div class="form-row">
+                    <span class="user-text">부서</span>
+                    <select class="user-input">
+                        <option value="">선택</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <span class="user-text">팀</span>
+                    <select class="user-input">
+                        <option value="">선택</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <span class="user-text">등급</span>
+                    <select class="user-input">
+                        <option value="관리자">관리자</option>
+                        <option value="팀장">팀장</option>
+                        <option value="수석 매니저">수석 매니저</option>
+                        <option value="매니저">매니저</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <span class="user-text">입사일</span>
+                    <input type="date" class="user-input">
+                </div>
+                <div class="form-row">
+                    <span class="user-text">휴가 개수</span>
+                    <input type="text" class="user-input">
+                </div>
+                <div class="form-row">
+                    <span class="user-text">초기화 기준</span>
+                    <select class="user-input">
+                        <option value="0">매년 1월 1일</option>
+                        <option value="1">입사일 기준</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-button">
+                <button type="button" class="modal-btn">수정</button>
+                <button type="button" class="modal-btn">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 사원 삭제 모달 -->
+<div class="modal-container">
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-major-content2">
+                <span class="user-text" style="margin-right: 0;">정현진님을 삭제하시겠습니까?</span>
+            </div>
+            <div class="modal-button">
+                <button type="button" class="modal-btn" style="background-color: rgb(252 82 48);">삭제</button>
+                <button type="button" class="modal-btn">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="/js/modal/user_mgmt_modal.js"></script>
+</html>

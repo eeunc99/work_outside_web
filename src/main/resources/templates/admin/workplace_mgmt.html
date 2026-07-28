@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>근무지 관리</title>
+    <link rel="stylesheet" th:href="@{/css/fragments/header.css}">
+    <link rel="stylesheet" th:href="@{/css/common/components.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments/side.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/workplace_mgmt.css}">
+    <link rel="stylesheet" th:href="@{/css/modal/workplace_mgmt_modal.css}">
+</head>
+
+<body>
+<header class="header"  th:replace="fragments/header :: header"></header>
+    <div class="main">
+
+        <!-- side.html 추가하기 -->
+        <div class="side"  th:replace="fragments/side :: side"></div>
+        <!-- 사이드 시작 -->
+        <!--<div class="side-box">
+            <div class="content">
+                <li>외근 현황</li>
+                <li>일정 관리</li>
+                <li>통계</li>
+                <li id="click">관리자</li>
+            </div>
+        </div>-->
+        <!-- 사이드 끝 -->
+
+        <!-- 메인 시작 -->
+        <div class="main-box">
+            <!-- 페이지 제목 -->
+            <div class="title">
+                <h2>관리자</h2>
+            </div>
+            <!-- 페이지 제목 끝 -->
+
+            <input type="hidden" id="work-start-time"/>
+            <input type="hidden" id="work-end-time"/>
+
+            <!-- 서브 페이지 시작 -->
+            <div class="sub-page">
+                <li onclick="javascript: location.href='/admin/user-mgmt';">사원 관리</li>
+                <li onclick="javascript: location.href='/admin/department-mgmt';">부서 관리</li>
+                <li id="click2" onclick="javascript: location.href='/admin/workplace-mgmt';">근무지 관리</li>
+                <li onclick="javascript: location.href='/admin/work-mgmt?workStartTime=' + $('#work-start-time').val() + '&workEndTime=' + $('#work-end-time').val();">근무 관리</li>
+                <li onclick="javascript: location.href='/admin/vacation-mgmt';">휴가 관리</li>
+                <li onclick="javascript: location.href='/admin/widget-token-mgmt';">위젯 토큰</li>
+            </div>
+            <!-- 서브 페이지 끝 -->
+
+            <!-- 리스트 조건 및 추가 버튼 -->
+            <div class="search">
+                <li>전체 보기 <input type="checkbox" class="show-all"></li>
+                <button class="wo-add row-primary-btn" type="button">추가</button>
+            </div>
+            <!-- 리스트 조건 및 추가 버튼 끝 -->
+
+            <!-- 근무지 리스트 시작 -->
+            <div class="wo-list">
+                <div th:if="${pageDTO.total == 0}" class="wo-list-empty">데이터가 없습니다.</div>
+            </div>
+            <!-- 근무지 리스트 끝 -->
+
+            <!-- 페이징 -->
+            <div class="paging-wrapper">
+                <ul class="paging-wrap">
+                    <li th:if="${pageDTO.prev}" class="paging-prev-wrap" title="이전 페이지">
+                        <a th:href="@{/admin/workplace-mgmt} + '?page=' + ${pageDTO.pageStart - 1} + '&workplaceUse=Y'" class="prev-btn">
+                            <div class="prev">
+                                <svg viewBox="0 0 48 48">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M32.8912 45.3014L12 23.913L32.8912 2.52471C33.5866 1.8251 34.7804 1.8251 35.4777 2.52471C36.1741 3.22333 36.1741 4.42368 35.4777 5.22224L17.1731 23.913L35.4777 42.7018C36.1741 43.4024 36.1741 44.6018 35.4777 45.4013C35.0788 45.8011 34.6819 46 34.1845 46C33.7855 45.9011 33.2881 45.7002 32.8912 45.3014Z"></path>
+                                </svg>
+                            </div>
+                        </a>
+                    </li>
+                    <th:block th:each="page:${#numbers.sequence(pageDTO.pageStart, pageDTO.pageEnd)}">
+                        <li th:if="${pageDTO.criteria.pageNum == page}" title="1" class="paging-item-selected" tabindex="0">
+                            <a rel="nofollow" th:text="${page}">1</a>
+                        </li>
+                        <li th:if="${pageDTO.criteria.pageNum != page && pageDTO.total != 0}" title="2" class="paging-item" tabindex="0">
+                            <a th:href="@{/admin/workplace-mgmt} + '?page=' + ${page} + '&workplaceUse=Y'" rel="nofollow" th:text="${page}" class="number-btn">2</a>
+                        </li>
+                    </th:block>
+                    <li th:if="${pageDTO.next}" title="다음 페이지" tabindex="0" class="paging-next" aria-disabled="false">
+                        <a th:href="@{/admin/workplace-mgmt} + '?page=' + ${pageDTO.pageEnd + 1} + '&workplaceUse=Y'" class="next-btn">
+                            <div class="next">
+                                <svg viewBox="0 0 48 48">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M13.9071 46C13.4118 46 12.9164 45.8001 12.6192 45.4003C11.9257 44.7007 11.9257 43.5014 12.6192 42.7019L30.8493 24.0125L12.5201 5.22317C11.8266 4.52357 11.8266 3.32425 12.5201 2.5247C13.2136 1.8251 14.3034 1.8251 15.096 2.5247L36 24.0125L15.195 45.4003C14.7988 45.8001 14.3034 46 13.9071 46Z"></path>
+                                </svg>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <!-- 메인 끝 -->
+
+    </div>
+
+<!-- 근무지 등록 모달 -->
+<div class="modal-container">
+    <div class="modal">
+        <div class="modal-content">
+            <form th:action="@{/admin/workplace-regist}" method="post" name="workplaceForm">
+                <div class="modal-title">
+                    <span>근무지 추가</span>
+                    <div class="modal-close">
+                        <svg xmlns="http://www.w3.org/2000/svg" data-name="Capa 1" id="Capa_1" viewBox="0 0 20 19.84">
+                            <path d="M10.17,10l3.89-3.89a.37.37,0,1,0-.53-.53L9.64,9.43,5.75,5.54a.37.37,0,1,0-.53.53L9.11,10,5.22,13.85a.37.37,0,0,0,0,.53.34.34,0,0,0,.26.11.36.36,0,0,0,.27-.11l3.89-3.89,3.89,3.89a.34.34,0,0,0,.26.11.35.35,0,0,0,.27-.11.37.37,0,0,0,0-.53Z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="modal-major-content">
+                    <span class="workplace-name-text">근무지</span>
+                    <input type="text" class="workplace-name" name="workplaceName" id="insert-workplace-name">
+                </div>
+                <div class="warn" id="insert-warn">
+                    <span>* 이미 해당 근무지가 존재합니다.</span>
+                </div>
+                <div class="modal-button">
+                    <button type="submit" class="modal-btn">등록</button>
+                    <button type="button" class="modal-btn modal-real-close">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 근무지 등록 모달 끝 -->
+
+<!-- 근무지 수정 모달 -->
+<div class="modal-container">
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-title">
+                <span>근무지 수정</span>
+                <div class="modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" data-name="Capa 1" id="Capa_1" viewBox="0 0 20 19.84">
+                        <path d="M10.17,10l3.89-3.89a.37.37,0,1,0-.53-.53L9.64,9.43,5.75,5.54a.37.37,0,1,0-.53.53L9.11,10,5.22,13.85a.37.37,0,0,0,0,.53.34.34,0,0,0,.26.11.36.36,0,0,0,.27-.11l3.89-3.89,3.89,3.89a.34.34,0,0,0,.26.11.35.35,0,0,0,.27-.11.37.37,0,0,0,0-.53Z" />
+                    </svg>
+                </div>
+            </div>
+            <div class="modal-major-content">
+                <span class="workplace-name-text">근무지</span>
+                <input type="text" class="workplace-name" id="workplaceName">
+                <input type="hidden" class="workplace-name" id="originName">
+            </div>
+            <div class="warn" id="update-warn">
+                <span>* 이미 해당 근무지가 존재합니다.</span>
+            </div>
+            <div class="modal-button">
+                <button type="button" class="modal-btn" id="update-btn">수정</button>
+                <button type="button" class="modal-btn modal-real-close">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 근무지 수정 모달 끝 -->
+
+<!-- 근무지 삭제 모달 -->
+<div class="modal-container">
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-major-content">
+                <span class="workplace-name-text" style="margin-right: 0;">이 근무지를 삭제하시겠습니까?</span>
+                <input type="hidden" id="delete-name">
+            </div>
+            <div class="modal-button">
+                <button type="button" class="modal-btn" style="background-color: rgb(252 82 48);" id="delete-btn">삭제</button>
+                <button type="button" class="modal-btn modal-real-close">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 근무지 삭제 모달 끝 -->
+
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script th:inline="javascript">
+    let workplaces = [[${workplaceDTOS}]];
+</script>
+<script src="/js/admin/admin-common.js"></script>
+<script src="/js/header.js"></script>
+<script src="/js/side.js"></script>
+<script src="/js/admin/workplace_mgmt.js"></script>
+</html>

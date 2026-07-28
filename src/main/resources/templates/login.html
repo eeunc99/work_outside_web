@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>로그인</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="manifest" th:href="@{/manifest.json}">
+    <link rel="apple-touch-icon" th:href="@{/image/icon-192.png}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#336699">
+    <script th:src="@{/js/pwa-register.js}"></script>
+</head>
+<body>
+    <div class="main">
+        <div class="center">
+        <h2>외근 관리</h2>
+
+        <div class="login-box">
+            <div class="id-box">
+                <img th:src="@{/image/header.png}"><input type="text" placeholder="아이디를 입력해주세요." id="memberId" name="memberId" class="member_id" autofocus>
+            </div>
+            <div class="pw-box">
+                <img th:src="@{/image/klipartz.com.png}"><input type="password" placeholder="비밀번호를 입력해주세요." name="memberPassword" class="member_password">
+            </div>
+            <div class="idsave"><input type="checkbox" class="loginCheck" id="loginCheck" style="width: 15px; margin-right: 5px;">아이디 저장</div>
+            <button type="button" class="loginok">로그인</button>
+            <input type="hidden" th:value="${session.memberNumber}" class="memberNumber"/>
+        </div>
+    </div>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="/js/login.js"></script>
+<script th:inline="javascript">
+    let serverIp = [[${@environment.getProperty('server.ip').trim()}]];
+    let serverPort = [[${@environment.getProperty('server.port').trim()}]];
+</script>
+</html>

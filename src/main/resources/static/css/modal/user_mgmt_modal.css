@@ -1,0 +1,178 @@
+/* 제목 폰트 */
+@font-face {
+    font-family: cafe24;
+    src: url("../../font/NanumSquareNeo-eHv.ttf");
+}
+
+/* 내용 폰트 */
+@font-face {
+    font-family: cafe24air;
+    src: url("../../font/NanumSquareNeo-bRg.ttf");
+}
+
+* {
+    font-family: cafe24air;
+}
+
+select, option {
+    text-align: center;
+}
+
+select {
+    border: 1px solid rgb(199 199 199);
+    border-radius: 5px;
+}
+
+input:read-only {
+    background-color: #bababa99;
+}
+
+input {
+    border: 1px solid rgb(199 199 199);
+    border-radius: 5px;
+}
+
+/* 모달 배경 */
+.modal-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, .4);
+    padding: 0 24px;
+    transition: background-color .1s;
+}
+
+/* 모달 박스 */
+.modal {
+    display: flex;
+    justify-content: center;
+    width: 480px;
+    background: #fff;
+    animation: modal-show .3s;
+    border-radius: 16px;
+    box-shadow: 0 20px 45px -15px rgba(20,30,45,.35);
+}
+
+/* 모달 내용 영역 */
+.modal-content {
+    width: 100%;
+    padding: 36px 36px 20px;
+    box-sizing: border-box;
+}
+
+/* 모달 제목 */
+.modal-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 22px;
+    margin-bottom: 24px;
+}
+
+.modal-close {
+    width: 30px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* 폼 전체 컨테이너 — 세로 방향 flex */
+.modal-major-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modal-major-content2 {
+    /*display: flex;
+    flex-direction: column;
+    gap: 12px;*/
+}
+
+/* 각 항목 row — 레이블 + 인풋 가로 정렬 */
+.form-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* 레이블 */
+.user-text {
+    font-size: 16px;
+    width: 90px;
+    flex-shrink: 0;
+    text-align: right;
+}
+
+/* 인풋 / 셀렉트 */
+.user-input {
+    flex: 1;
+    height: 34px;
+    font-size: 15px;
+    padding: 0 8px;
+    box-sizing: border-box;
+}
+
+/* 추가 권한 토글 */
+.perm-toggles {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.perm-check {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.perm-check input {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* 버튼 영역 */
+.modal-button {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 24px;
+    margin-bottom: 8px;
+}
+
+/* 버튼 */
+.modal-btn {
+    border: 0;
+    background-color: #336699;
+    color: #fff;
+    border-radius: 8px;
+    padding: 7px 28px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: cafe24air;
+    font-weight: lighter;
+    transition: background-color .15s ease;
+}
+
+.modal-btn:hover {
+    background-color: rgb(80, 130, 180);
+}
+
+@keyframes modal-show {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

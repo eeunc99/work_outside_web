@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.app.work.mapper.statistics.StatisticsMapper">
+
+    <select id="selectWorkList" resultType="statisticsVO">
+        select member_name, (select team_name from tbl_team where team_number = tm.team_number),
+                to_char(work_start_time, 'YYYY-MM-DD HH24:MI') as work_start_time, to_char(work_end_time, 'YYYY-MM-DD HH24:MI') as work_end_time,
+                to_char(work_real_start_time, 'YYYY-MM-DD HH24:MI') as work_real_start_time,
+                (select workplace_name from tbl_workplace where workplace_number = tw.workplace_number), work_spent_time, work_number, work_status,
+                workplace_number, work_title, work_detail
+        from tbl_work tw join tbl_member tm on tw.member_number = tm.member_number
+        <where>
+            <if test='workStartTime != null and workStartTime != "" and workEndTime != null and workEndTime != ""'>
+                and work_start_time between (#{workStartTime} || ' 00:00:00.000')::timestamp and (#{workEndTime} || ' 23:59:59.997')::timestamp
+            </if>
+            <if test='teamNumber != null and !teamNumber.equals("")'>
+                and team_number = #{teamNumber}
+            </if>
+            <if test='workplaceNumber != null and workplaceNumber != ""'>
+                and workplace_number = #{workplaceNumber}
+            </if>
+            <if test='memberNumber != null and memberNumber != ""'>
+                and tm.member_number = #{memberNumber}
+            </if>
+        </where>
+        order by work_start_time desc
+        <if test='criteria != null and criteria != ""'>
+            limit #{criteria.amount} offset #{criteria.skip}
+        </if>
+    </select>
+
+    <select id="adminSelectWorkList" resultType="statisticsVO">
+        select member_name, (select team_name from tbl_team where team_number = tm.team_number),
+        to_char(work_start_time, 'YYYY-MM-DD HH24:MI') as work_start_time, to_char(work_end_time, 'YYYY-MM-DD HH24:MI') as work_end_time,
+        (select workplace_name from tbl_workplace where workplace_number = tw.workplace_number), work_spent_time, work_number, work_status, work_real_start_time,
+        workplace_number
+        from tbl_work tw join tbl_member tm on tw.member_number = tm.member_number
+        <where>
+            <if test='workStartTime == null and workStartTime == "" and workEndTime == null and workEndTime == ""'>
+                and work_start_time=current_date and work_end_time=current_date
+            </if>
+            <if test='workStartTime != null and workStartTime != "" and workEndTime != null and workEndTime != ""'>
+                and work_start_time between (#{workStartTime} || ' 00:00:00.000')::timestamp and (#{workEndTime} || ' 23:59:59.997')::timestamp
+            </if>
+            <if test='teamNumber != null and !teamNumber.equals("")'>
+                and team_number = #{teamNumber}
+            </if>
+            <if test='workplaceNumber != null and workplaceNumber != ""'>
+                and workplace_number = #{workplaceNumber}
+            </if>
+            <if test='memberNumber != null and memberNumber != ""'>
+                and tm.member_number = #{memberNumber}
+            </if>
+        </where>
+        order by work_start_time desc
+        <if test='criteria != null and criteria != ""'>
+            limit #{criteria.amount} offset #{criteria.skip}
+        </if>
+    </select>
+
+    <select id="countWorkListForPaging" resultType="int">
+        select count(work_number)
+        from tbl_work tw join tbl_member tm on tw.member_number = tm.member_number
+        <where>
+            <if test='workStartTime != null and workStartTime != "" and workEndTime != null and workEndTime != ""'>
+                and work_start_time between (#{workStartTime} || ' 00:00:00.000')::timestamp and (#{workEndTime} || ' 23:59:59.997')::timestamp
+            </if>
+            <if test='teamNumber != null and !teamNumber.equals("")'>
+                and team_number = #{teamNumber}
+            </if>
+            <if test='workplaceNumber != null and workplaceNumber != ""'>
+                and workplace_number = #{workplaceNumber}
+            </if>
+            <if test='memberNumber != null and memberNumber != ""'>
+                and tm.member_number = #{memberNumber}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectWorkListForGraph" resultType="graphVO">
+        select count(work_start_time) as total_count, to_char(date_trunc('day', work_start_time), 'YYYY-MM-DD') as work_start_time from tbl_work tw
+        join tbl_member tm on tw.member_number = tm.member_number
+        <where>
+            <if test='workStartTime != null and workStartTime != "" and workEndTime != null and workEndTime != ""'>
+                and work_start_time between (#{workStartTime} || ' 00:00:00.000')::timestamp and (#{workEndTime} || ' 23:59:59.997')::timestamp
+            </if>
+            <if test='teamNumber != null and !teamNumber.equals("")'>
+                and team_number = #{teamNumber}
+            </if>
+            <if test='workplaceNumber != null and workplaceNumber != ""'>
+                and workplace_number = #{workplaceNumber}
+            </if>
+            <if test='memberNumber != null and memberNumber != ""'>
+                and tm.member_number = #{memberNumber}
+            </if>
+        </where>
+        group by date_trunc('day', work_start_time)
+        order by work_start_time asc
+    </select>
+</mapper>

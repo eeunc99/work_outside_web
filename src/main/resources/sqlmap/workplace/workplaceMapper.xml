@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.app.work.mapper.workplace.WorkplaceMapper">
+
+    <select id="selectWorkplaceList" resultType="workplaceDTO">
+        select workplace_number, workplace_name, workplace_use
+        from tbl_workplace
+        <where>
+            <if test='workplaceUse != null and workplaceUse == "Y"'>
+                and workplace_use = #{workplaceUse}
+            </if>
+        </where>
+        order by workplace_name collate "ko_KR.utf8" limit #{criteria.amount} offset #{criteria.skip}
+    </select>
+
+    <select id="selectWorkplaceCount">
+        select count(workplace_number)
+        from tbl_workplace
+        <where>
+            <if test='workplaceUse != null and workplaceUse == "Y"'>
+                and workplace_use = #{workplaceUse}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectWorkplace" resultType="int">
+        select count(workplace_name)
+        from tbl_workplace
+        where workplace_name = #{workplaceName}
+    </select>
+
+    <select id="selectWorkplaceByName" resultType="workplaceDTO">
+        select workplace_number, workplace_name
+        from tbl_workplace
+        where workplace_name = #{workplaceName}
+    </select>
+
+    <select id="placeSearch" resultType="workplaceDTO">
+        select workplace_number , workplace_name
+        from tbl_workplace
+        <where>
+            <if test='workplaceName != null'>
+                and workplace_name like concat('%', #{workplaceName}, '%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="saveWorkplace">
+        insert into tbl_workplace (workplace_name)
+        values (#{workplaceName})
+    </insert>
+
+    <update id="updateWorkplace">
+        update tbl_workplace
+        set workplace_name = #{workplaceName}
+        where workplace_name = #{originName}
+    </update>
+
+    <update id="updateWorkplaceUse">
+        update tbl_workplace
+        set workplace_use = #{workplaceUse}
+        where workplace_name = #{workplaceName}
+    </update>
+</mapper>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>위젯 토큰 관리</title>
+    <link rel="stylesheet" th:href="@{/css/fragments/header.css}">
+    <link rel="stylesheet" th:href="@{/css/common/components.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments/side.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin-common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/widget_token_mgmt.css}">
+    <link rel="manifest" th:href="@{/manifest.json}">
+    <link rel="apple-touch-icon" th:href="@{/image/icon-192.png}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#336699">
+    <script th:src="@{/js/pwa-register.js}"></script>
+</head>
+<body>
+<header class="header" th:replace="fragments/header :: header"></header>
+<div class="main">
+
+    <div class="side" th:replace="fragments/side :: side"></div>
+
+    <div class="main-box">
+        <div class="title">
+            <h2>관리자</h2>
+        </div>
+
+        <div class="st-list">
+          <div class="admin-panel">
+            <div class="sub-page">
+                <li onclick="javascript: location.href='/admin/user-mgmt';">사원 관리</li>
+                <li onclick="javascript: location.href='/admin/department-mgmt';">부서 관리</li>
+                <li onclick="javascript: location.href='/admin/workplace-mgmt';">근무지 관리</li>
+                <li onclick="javascript: location.href='/admin/work-mgmt';">근무 관리</li>
+                <li onclick="javascript: location.href='/admin/vacation-mgmt';">휴가 관리</li>
+                <li id="click2" onclick="javascript: location.href='/admin/widget-token-mgmt';">위젯 토큰</li>
+            </div>
+
+            <div th:if="${issuedToken != null}" class="widget-issued">
+                <span class="widget-issued-label">발급된 토큰<br>(지금만 표시됩니다)</span>
+                <span class="widget-issued-token" id="widget-issued-token" th:text="${issuedToken}"></span>
+                <button type="button" class="widget-copy-btn" onclick="widgetCopyToken()">복사</button>
+            </div>
+
+            <form th:action="@{/admin/widget-token-issue}" method="post" class="widget-toolbar">
+                <select name="memberNumber" required>
+                    <option value="" disabled selected>회원 선택</option>
+                    <option th:each="member : ${members}" th:value="${member.memberNumber}" th:text="${member.memberName}"></option>
+                </select>
+                <select name="scope" required>
+                    <option value="READ">조회 전용</option>
+                    <option value="READ_WRITE">조회 + 쓰기</option>
+                </select>
+                <input type="text" name="label" placeholder="기기 메모 (예: 홍길동 아이폰)" maxlength="50">
+                <button type="submit" class="dept-btn">발급</button>
+            </form>
+
+            <div th:if="${#lists.isEmpty(tokens)}" class="widget-empty">발급된 토큰이 없습니다.</div>
+
+            <table th:if="${!#lists.isEmpty(tokens)}" class="widget-table">
+                <thead>
+                    <tr>
+                        <th>회원</th>
+                        <th>스코프</th>
+                        <th>메모</th>
+                        <th>발급일</th>
+                        <th>마지막 사용</th>
+                        <th>상태</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="token : ${tokens}">
+                        <td th:text="${token.memberName}"></td>
+                        <td th:text="${token.scope}"></td>
+                        <td th:text="${token.label}"></td>
+                        <td th:text="${#temporals.format(token.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td th:text="${token.lastUsedAt != null ? #temporals.format(token.lastUsedAt, 'yyyy-MM-dd HH:mm') : '-'}"></td>
+                        <td>
+                            <span th:if="${token.revokedAt == null}" class="badge badge-blue">유효</span>
+                            <span th:if="${token.revokedAt != null}" class="badge badge-danger">폐기됨</span>
+                        </td>
+                        <td>
+                            <form th:if="${token.revokedAt == null}" th:action="@{/admin/widget-token-revoke}" method="post">
+                                <input type="hidden" name="tokenId" th:value="${token.tokenId}">
+                                <button type="submit" class="widget-revoke-btn">폐기</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <script th:if="${issuedToken != null}">
+                function widgetCopyToken() {
+                    navigator.clipboard.writeText(document.getElementById('widget-issued-token').textContent);
+                }
+            </script>
+          </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

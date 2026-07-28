@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.app.work.mapper.department.DepartmentMapper">
+    <select id="selectDepartmentList" resultType="deptDTO">
+        select dept_number, dept_name, dept_use
+        from tbl_dept
+        where dept_use = 'Y'
+        order by dept_number
+    </select>
+
+    <select id="selectTeamList" resultType="teamDTO">
+        select team_number, team_name, team_use, dept_number
+        from tbl_team
+        where team_use = 'Y'
+        <if test='deptNumber != null and !deptNumber.equals("")'>
+            and dept_number = #{deptNumber}
+        </if>
+        order by team_number
+    </select>
+
+    <insert id="saveDepartment">
+        insert into tbl_dept (dept_name)
+        values (#{deptName})
+    </insert>
+
+    <update id="updateDepartment">
+        update tbl_dept
+        set dept_name = #{deptName}
+        where dept_number = #{deptNumber}
+    </update>
+
+    <update id="deleteDepartment">
+        update tbl_dept
+        set dept_use = 'N'
+        where dept_number = #{deptNumber}
+    </update>
+
+    <insert id="saveTeam">
+        insert into tbl_team (team_name, dept_number)
+        values (#{teamName}, #{deptNumber})
+    </insert>
+
+    <update id="updateTeam">
+        update tbl_team
+        set team_name = #{teamName}
+        where team_number = #{teamNumber}
+    </update>
+
+    <update id="deleteTeam">
+        update tbl_team
+        set team_use = 'N'
+        <where>
+            <if test='teamNumber != null and teamNumber != ""'>
+                and team_number = #{teamNumber}
+            </if>
+            <if test='deptNumber != null and deptNumber != ""'>
+                and dept_number = #{deptNumber}
+            </if>
+        </where>
+    </update>
+</mapper>

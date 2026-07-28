@@ -1,0 +1,355 @@
+/* 제목 폰트 */
+@font-face {
+    font-family: cafe24;
+    src: url("../../font/NanumSquareNeo-eHv.ttf");
+}
+
+/* 내용 폰트 */
+@font-face {
+    font-family: cafe24air;
+    src: url("../../font/NanumSquareNeo-bRg.ttf");
+}
+
+/* 기본 설정 */
+*{
+    margin: auto;
+    padding: 0;
+}
+
+/* 전체화면 크기 */
+body {
+    width: 1840px;
+}
+
+@media (max-width: 1425px) {
+    body {
+        margin: 0;
+        width: 1200px;
+    }
+
+    .mainbox {
+        max-height: 600px !important;
+    }
+
+    .sub-box {
+        width: 1200px;
+    }
+
+    .list1 {
+        width: 1200px;
+    }
+
+    .list1 > li {
+        font-size: 24px !important;
+    }
+
+    .list2 {
+        width: 150px !important;
+    }
+
+    .list2 > li {
+        font-size: 24px !important;
+    }
+
+    .endTime {
+        display: none;
+    }
+
+    .usertime {
+        width: 200px !important;
+    }
+}
+
+@media (max-width: 1160px) {
+    body {
+        margin: 0;
+        width: 800px;
+        max-width: 800px;
+    }
+
+    .mainbox {
+        max-height: 550px !important;
+    }
+
+    .sub-box {
+        width: 800px;
+    }
+
+    .list1 {
+        width: 800px;
+    }
+
+    .list1 > li {
+        font-size: 17px !important;
+        margin: 0px 5px 0 5px !important;
+    }
+
+    .work {
+        display: none;
+    }
+
+    .username {
+        width: 90px !important;
+    }
+
+    .list2 {
+        width: 150px !important;
+    }
+
+    .list2 > li {
+        font-size: 24px !important;
+    }
+
+    .endTime {
+        display: none;
+    }
+
+    .usertime {
+        width: 200px !important;
+    }
+}
+
+@media (max-width: 765px) {
+    body {
+        margin: 0;
+        width: 500px !important;
+    }
+
+    .mainbox {
+        max-height: 650px !important;
+    }
+
+    .sub-box {
+        width: 500px !important;
+    }
+
+    .list1 {
+        padding: 15px 0 !important;
+        margin: 5px 0 !important;
+    }
+
+    .list1 > li {
+        font-size: 17px !important;
+    }
+
+    .username {
+        width: 90px !important;
+    }
+
+    .member-rank {
+        display: none;
+    }
+
+    .list2 {
+        width: 150px !important;
+    }
+
+    .list2 > li {
+        font-size: 24px !important;
+    }
+
+    .endTime {
+        display: none;
+    }
+
+    .usertime {
+        width: 200px !important;
+    }
+}
+
+.title {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 제목,부제목 폰트 */
+h1, h2 {
+    font-family: cafe24;
+    margin-bottom : 12px;
+}
+
+.main-box {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    font-family: cafe24air;
+    margin-top: 40px;
+}
+
+/*.sub-box {*/
+/*    margin-top: 30px;*/
+/*}*/
+
+/* 화이트 보드 리스트 */
+/* 리스트 요소 디자인 */
+.list1 {
+    width: 100%;
+    padding: 15px 5px;
+    display: flex;
+    border: 0.5px solid rgb(221, 221, 221);
+    border-radius: 7px;
+    margin: 15px 0;
+    box-shadow: 0 5px 5px rgba(173, 173, 173, 0.19), 0 6px 6px rgba(173,173,173,0.23);
+    align-items: center;
+}
+
+.list1 > li {
+    list-style: none;
+    /* margin: 0 10px; */
+    margin: 0px 20px 0 10px;
+    font-size: 30px;
+}
+
+/* 진행중일 때 컬러 */
+.point1 {
+    color :rgb(75, 189, 75);
+    width: 10px;
+    margin: 0 10px 0 10px;
+}
+
+/* 완료된 컬러 */
+.point2 {
+    color : gray;
+    width: 10px;
+    margin: 0 10px 0 10px;
+}
+
+.point3 {
+    color: #6B7480;
+    width: 10px;
+    margin: 0 10px 0 10px;
+}
+
+/* 직원 이름 */
+.username {
+    width: 275px;
+}
+
+/* 외근 시작 시간 및 종료 시간 또는 진행중 */
+.usertime {
+    width: 350px;
+    text-align: left;
+    margin: 0 10px 0 10px;
+}
+
+/* 외근지 */
+.ow {
+    width: 345px;
+}
+
+/* 외근 내용 */
+.work {
+    width: 700px;
+}
+
+.mainbox {
+    /*!*max-height: 670px;*!*/
+    /*height: 600px;*/
+    /*max-width:100%;*/
+    /*flex-direction : column;*/
+    /*display : flex;*/
+    /*flex-wrap : wrap;*/
+    max-height: 465px;
+    height: 550px;
+    max-width: 100%;
+    width: 85%;
+    flex-direction: column;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.box-main {
+    margin: 5px 5px;
+    /*max-height: 530px;*/
+    /*height: auto;*/
+    height: 500px;
+    max-height: 500px;
+}
+
+
+/*휴가자*/
+.username2 {
+    width: 100px;
+}
+
+.list2 {
+    width: 9%;
+    padding: 15px 5px;
+    display: flex;
+    border: 0.5px solid rgb(221, 221, 221);
+    border-radius: 7px;
+    margin: 15px 5px;
+    box-shadow: 0 5px 5px rgba(173, 173, 173, 0.19), 0 6px 6px rgba(173,173,173,0.23);
+    align-items: center;
+}
+
+.list2 > li {
+    list-style: none;
+    /* margin: 0 10px; */
+    margin: 0px 20px 0 10px;
+    font-size: 30px;
+}
+
+/* 상단 인원 요약 */
+.stat-bar {
+    display: flex;
+    gap: 20px;
+    width: 85%;
+    max-width: 100%;
+    margin: 0 auto 20px;
+}
+
+.stat-bar .stat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 10px;
+    border: 0.5px solid rgb(221, 221, 221);
+    border-radius: 12px;
+    box-shadow: 0 5px 5px rgba(173, 173, 173, 0.19), 0 6px 6px rgba(173, 173, 173, 0.23);
+}
+
+.stat-bar .n {
+    font-size: 34px;
+    font-weight: bold;
+    font-family: cafe24;
+    color: #336699;
+}
+
+.stat-bar .st-transit .n { color: #2E9A4C; }
+.stat-bar .st-active .n { color: #D6467F; }
+.stat-bar .st-leave .n { color: #6B7480; }
+
+.stat-bar .l {
+    font-size: 15px;
+    color: #666;
+    margin-top: 2px;
+}
+
+/* 카드 좌측 상태 스트라이프 */
+.list1 {
+    border-radius: 12px;
+    border-left: 6px solid #336699;
+    position: relative;
+}
+
+.list1.st-transit { border-left-color: #2E9A4C; }
+.list1.st-active { border-left-color: #D6467F; }
+
+/* 상태 칩 (list.html 배지와 동일 색상 체계) */
+.list1 > li.status-chip {
+    font-size: 15px !important;
+    font-weight: bold;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: #E3F5E7;
+    color: #2E9A4C;
+    white-space: nowrap;
+}
+
+.list1.st-active .status-chip {
+    background: #FBE1EB;
+    color: #D6467F;
+}

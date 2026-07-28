@@ -1,0 +1,48 @@
+.modal {
+    z-index: 2050 !important;
+    display: block;
+    padding-right: 17px;
+}
+
+.modal-dialog2 {
+    z-index: 1200;
+}
+
+.m  odal-content {
+    background-clip: padding-box;
+    background-color: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0);
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    outline: 0 none;
+    position: relative;
+}
+
+.inmodal .modal-header {
+    padding: 9px 15px;
+    background-color: #f1f1f1;
+    border-radius: 4px 4px 0px 0px;
+}
+
+.inmodal .modal-title {
+    font-size: 14px;
+}
+
+.modal-body {
+    padding: 15px 15px 5px 15px;
+}
+
+.colRight {
+    text-align: center;
+}
+
+.conSize {
+    min-width: 768px;
+}
+
+.tableRadius {
+    background-color: #fff;
+    border-radius: 3px;
+    border: 1px solid #c3c3c3;
+    padding: 20px 20px 10px 20px;
+}

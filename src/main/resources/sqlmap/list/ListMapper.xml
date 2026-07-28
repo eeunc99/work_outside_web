@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.app.work.mapper.list.ListMapper">
+    <select id="toDay" resultType="String">
+        /* 현재 날짜 */
+        select to_char(current_date, 'YYYY"년" MM"월" DD"일"') as to_day
+    </select>
+
+    <select id="workList" resultType="listVo">
+        /* 외근 현황 현재 진행중 리스트 */
+        select tw.work_number as workNumber,
+        tw.work_start_time as workStartTime, case when tw.work_end_time is null then tw.work_predict_time else tw.work_predict_time end as workPredictTime, tw.work_status, tw.work_end_time as workEndTime,
+        tw.work_detail as workDetail, tw.work_status as workStatus, tm.member_number as memberNumber, tm.member_name as memberName, tm.member_rank as memberRank,
+        tw2.workplace_name as workplaceName, tm.team_number as teamNumber, tw.work_title, tw.work_real_start_time
+        from tbl_work tw
+         join tbl_member tm
+              on tw.member_number = tm.member_number
+         join tbl_workplace tw2
+              on tw.workplace_number = tw2.workplace_number
+        join tbl_team tt
+            on tm.team_number = tt.team_number
+        where (work_status = '진행중' or work_status = '이동중') and date_trunc('day', tw.work_start_time) >= current_date - INTERVAL '1 day' and date_trunc('day', tw.work_start_time) <![CDATA[ <= current_date ]]>
+        <if test='!listVO.listAllTeams and teamNumber != null'>
+            and tm.team_number = #{teamNumber}
+        </if>
+        UNION ALL
+        select
+            null::integer as workNumber,
+            tv.vacation_st_date as workStartTime,
+            tv.vacation_end_date as workPredictTime,
+            '야간휴식' as work_status,
+            null::timestamp as workEndTime,
+            '' as workDetail,
+            '야간휴식' as workStatus,
+            tm2.member_number as memberNumber,
+            tm2.member_name as memberName,
+            tm2.member_rank as memberRank,
+            '' as workplaceName,
+            tm2.team_number as teamNumber,
+            '야간 후 휴식' as work_title,
+            null::timestamp as work_real_start_time
+        from tbl_vacation tv
+        join tbl_member tm2 on tv.member_number = tm2.member_number
+        join tbl_team tt2 on tm2.team_number = tt2.team_number
+        where tv.vacation_check = 'N'
+          and tv.vacation_end_date >= now()
+        <if test='!listVO.listAllTeams and teamNumber != null'>
+            and tm2.team_number = #{teamNumber}
+        </if>
+        order by workStartTime asc
+    </select>
+
+    <select id="selectFinishList" resultType="listVo">
+        /* 외근 현황 종료 리스트 */
+        select tw.work_number as workNumber,
+        tw.work_start_time as workStartTime, case when tw.work_end_time is null then tw.work_predict_time else tw.work_predict_time end as workPredictTime, tw.work_status, tw.work_end_time as workEndTime,
+        tw.work_detail as workDetail, tw.work_status as workStatus, tm.member_number as memberNumber, tm.member_name as memberName, tm.member_rank as memberRank,
+        tw2.workplace_name as workplaceName, tm.team_number as teamNumber, tw.work_title, tw.work_real_start_time
+        from tbl_work tw
+        join tbl_member tm
+        on tw.member_number = tm.member_number
+        join tbl_workplace tw2
+        on tw.workplace_number = tw2.workplace_number
+        join tbl_team tt
+        on tm.team_number = tt.team_number
+        where work_status = '종료' and date_trunc('day', tw.work_start_time) = current_date
+        <if test='!listVO.listAllTeams and teamNumber != null'>
+            and tm.team_number = #{teamNumber}
+        </if>
+        order by tw.work_start_time asc
+    </select>
+
+    <select id="workAutoCheck" resultType="scheduleVo">
+        select
+        tm.member_number as memberNumber,
+        tm.member_name ,
+        tm.member_rank ,
+        tw.work_number ,
+        case
+        when extract(hour
+        from
+        tw.work_start_time) <![CDATA[< 12 then '오전' ]]>
+        else '오후'
+        end || ' ' || to_char(tw.work_start_time,
+        'HH24:MI') work_start_time ,
+        case
+        when extract(hour
+        from
+        tw.work_end_time) <![CDATA[< 12 then '오전' ]]>
+        else
+        '오후'
+        end || ' ' || to_char(tw.work_end_time,
+        'HH24:MI') work_end_time,
+        to_char(work_start_time,
+        'YYYY-MM-DD HH24:MI') as work_start_time2 ,
+        to_char(work_start_time,
+        'YYYY-MM-DD HH24:MI')
+        as work_start_time3 ,
+        to_char(work_end_time,
+        'YYYY-MM-DD HH24:MI') as work_end_time2 ,
+        tw.work_detail ,
+        tw.work_status ,
+        tw.workplace_number ,
+        tw2.workplace_name,
+        tm.member_use,
+        case
+        when extract(hour
+        from
+        tw.work_predict_time) <![CDATA[< 12 then '오전' ]]>
+        else '오후'
+        end || ' ' || to_char(tw.work_predict_time,
+        'HH24:MI') work_predict_time,
+        to_char(tw.work_predict_time,
+        'YYYY-MM-DD HH24:MI') as real_work_predict_time
+        ,
+        to_char(tw.work_real_start_time,
+        'YYYY-MM-DD HH24:MI') as work_real_start_time2 ,
+        tw.work_title,
+        tw.work_real_start_time
+        from tbl_member tm join tbl_work tw
+        on tm.member_number = tw.member_number
+        join tbl_workplace tw2 on tw.workplace_number = tw2.workplace_number
+        where tw.work_start_time = current_date and tw.work_status = '이동중'
+    </select>
+
+</mapper>

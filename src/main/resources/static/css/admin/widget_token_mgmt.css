@@ -1,0 +1,103 @@
+/* 발급 툴바 */
+.widget-toolbar {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px;
+    border-bottom: 1px solid var(--admin-border);
+}
+.widget-toolbar select,
+.widget-toolbar input[type="text"] {
+    font-size: 13px;
+    border: 1px solid var(--admin-border);
+    border-radius: 6px;
+}
+.widget-toolbar input[type="text"] {
+    flex: 1;
+    min-width: 160px;
+}
+
+/* 발급된 토큰 알림 */
+.widget-issued {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 16px;
+    padding: 12px 14px;
+    background-color: #e3ecf5;
+    border: 1px solid var(--admin-blue);
+    border-radius: 8px;
+}
+.widget-issued-label {
+    font-size: 12px;
+    color: var(--admin-blue-strong);
+    white-space: nowrap;
+}
+.widget-issued-token {
+    flex: 1;
+    word-break: break-all;
+    font-family: monospace;
+    font-size: 13px;
+}
+.widget-copy-btn {
+    background-color: #fff;
+    color: var(--admin-blue-strong);
+    border: 1px solid var(--admin-blue);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-family: cafe24air;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.widget-copy-btn:hover { background-color: var(--admin-row-hover); }
+
+/* 토큰 목록 */
+.widget-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+.widget-table th {
+    background-color: var(--admin-head-bg);
+    color: var(--admin-text-muted);
+    font-weight: normal;
+    text-align: left;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--admin-border);
+}
+.widget-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--admin-row-line);
+    color: var(--admin-text);
+}
+.widget-table tbody tr:hover { background-color: var(--admin-row-hover); }
+.widget-table tbody tr:last-child td { border-bottom: 0; }
+
+.badge.badge-danger {
+    background-color: #f7e9e7;
+    color: var(--admin-danger);
+}
+
+.widget-revoke-btn {
+    width: auto;
+    height: auto;
+    background-color: #fff;
+    color: var(--admin-danger);
+    border: 1px solid #e3b3ad;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-family: cafe24air;
+    cursor: pointer;
+}
+.widget-revoke-btn:hover { background-color: #f7e9e7; }
+
+.widget-empty {
+    text-align: center;
+    padding: 32px 0;
+    font-size: 13px;
+    color: var(--admin-text-muted);
+}
