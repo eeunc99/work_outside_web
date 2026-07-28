@@ -1,0 +1,79 @@
+/* 제목 폰트 */
+@font-face {
+    font-family: cafe24;
+    src: url("../../font/NanumSquareNeo-eHv.ttf");
+}
+
+/* 내용 폰트 */
+@font-face {
+    font-family: cafe24air;
+    src: url("../../font/NanumSquareNeo-bRg.ttf");
+}
+
+h2 {
+    margin-top: calc(50px + env(safe-area-inset-top));
+}
+
+.top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: cafe24air;
+    font-weight: bold;
+    font-size: 15px;
+    color: #1B222B;
+    cursor: pointer;
+    position: absolute;
+    /* z-index: -100; */
+    justify-content: flex-end;
+    right: 16px;
+    top: 14px;
+    background: #fff;
+    padding: 6px 14px 6px 8px;
+    border-radius: 999px;
+    box-shadow: 0 2px 10px rgba(20, 30, 45, .1);
+}
+
+.top > img {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+}
+
+/* 로그아웃 */
+.logout {
+    display: none;
+    margin: 0;
+}
+
+.logout2 {
+    display: flex;
+    justify-content: flex-end;
+    list-style: none;
+    font-family: cafe24air;
+    position: absolute;
+    top: 16px;
+    right: 20px;
+}
+
+.logout2 a {
+    background: #fff;
+    padding: 6px 16px;
+    border-radius: 999px;
+    box-shadow: 0 2px 10px rgba(20, 30, 45, .1);
+    transition: background-color .15s ease;
+}
+
+.logout2 a:hover {
+    background: #f2f4f7;
+}
+
+.flex {
+    display: flex;
+    flex-direction: column;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}

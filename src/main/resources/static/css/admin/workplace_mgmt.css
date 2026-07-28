@@ -1,0 +1,349 @@
+/* 제목 폰트 */
+@font-face {
+    font-family: cafe24;
+    src: url("../../font/NanumSquareNeo-eHv.ttf");
+}
+
+/* 내용 폰트 */
+@font-face {
+    font-family: cafe24air;
+    src: url("../../font/NanumSquareNeo-bRg.ttf");
+}
+
+/* 기본 설정 */
+body {
+    margin: 0;
+}
+
+h2 {
+    font-family: cafe24;
+    margin-top: 50px;
+}
+
+/* 메인 요소 크기 */
+.main {
+    width: 100%;
+    display: flex;
+    margin: auto;
+}
+
+/* 사이드바 스타일은 fragments/side.css 공통 정의를 사용 */
+
+/* 전체 크기 설정 */
+.main-box {
+    width: 95%;
+}
+
+.main-box li {
+    list-style: none;
+}
+
+/* 제목 */
+.title {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    font-family: cafe24;
+}
+
+/* 서브 페이지 */
+/* 밑줄 탭 바 (항목이 많아도 한 줄로 자연스럽게 늘어남) */
+.sub-page {
+    width: 70%;
+    margin: 24px auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 22px;
+    border-bottom: 1px solid #DAE1EC;
+    padding: 0 4px;
+}
+
+.sub-page > li {
+    flex: none;
+    margin: 0;
+    padding: 12px 2px;
+    margin-bottom: -1px;
+    border-bottom: 2px solid transparent;
+    font-family: cafe24air;
+    font-size: 14px;
+    color: #5C6980;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color .15s ease, border-color .15s ease;
+}
+
+.sub-page > li:hover {
+    color: #1A2230;
+}
+
+#click2 {
+    border-bottom-color: #336699;
+}
+
+#point {
+    color :#254A70;
+    font-weight: bold;
+}
+/* 서브 페이지 끝 */
+
+/* 검색 조건 및 추가 버튼 — 독립된 카드 */
+.search {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    width: 70%;
+    box-sizing: border-box;
+    margin: 18px auto 24px;
+    background: #fff;
+    border: 1px solid #DAE1EC;
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(20, 30, 45, .05), 0 10px 26px -16px rgba(20, 30, 45, .22);
+    padding: 14px 16px;
+}
+
+.search > li {
+    flex: none;
+    white-space: nowrap;
+    margin: 0 10px;
+}
+
+/* 검색 조건 및 추가 버튼 끝 */
+
+/* 근무지 리스트 — 표 전체를 카드 하나로 감싸고, 행은 위쪽 경계선으로만 구분 */
+.wo-list {
+    width: 70%;
+    box-sizing: border-box;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #DAE1EC;
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(20, 30, 45, .05), 0 10px 26px -16px rgba(20, 30, 45, .22);
+    overflow: hidden;
+    padding: 4px 0;
+}
+
+.wo-list-empty {
+    padding: 20px;
+    color: #5C6980;
+}
+
+.list1 {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px 20px;
+    display: flex;
+    border-top: 1px solid #DAE1EC;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color .15s ease;
+}
+
+.list1:first-child {
+    border-top: 0;
+}
+
+.list1:hover {
+    background-color: #F1F4F8;
+}
+
+.list1 > li {
+    list-style: none;
+}
+
+.point {
+    display: flex;
+    align-items: center;
+}
+
+/* 사용중/미사용 배지 — 색상은 components.css .badge-on/.badge-off 공용 정의 */
+.point1, .point2 {
+    flex: none;
+    min-width: 62px;
+    text-align: center;
+    margin: 0 12px 0 0;
+}
+
+.unused > li {
+    color: gray;
+}
+
+/* 근무지 이름 */
+.wo-name {
+    width: 160px;
+}
+
+/* 사용 버튼 */
+.use {
+    background-color: #336699;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.use:hover {
+    background-color: #254A70;
+}
+
+.list1_1 {
+    display: flex;
+    gap: 8px;
+}
+
+/* 수정/삭제 버튼 — 색상·모양은 components.css .row-edit-btn/.row-del-btn 공용 정의 */
+.edit-btn, .del-btn {
+    min-width: 52px;
+}
+
+
+
+.paging-wrapper {
+    margin: 30px auto 15px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+.paging-wrap {
+    display: flex;
+    color: rgb(158, 158, 158);
+    margin: 0px;
+    font-family: "SF Pro Text", "Helvetica Neue", "Segoe UI", Arial, NotoSansKR, sans-serif !important;
+    font-size: 14px !important;
+    user-select: none;
+    padding: 0;
+}
+
+.paging-wrap .paging-prev-wrap .paging-next{
+    margin: 0px;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+@media only screen and (min-width: 1080px) {
+    .paging-wrap > li {
+        margin: 0px 6px;
+    }
+}
+
+.paging-wrap > li {
+    margin: 0px 3px;
+    float: none;
+    display: flex;
+    min-width: 22px;
+    height: 25px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    border: 0px;
+    font-weight: bold;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.prev .next {
+    display: inline-flex;
+    align-self: center;
+}
+
+paging-prev-wrap > li.paging-item {
+    background-color: rgb(109, 109, 109) !important;
+}
+
+@media only screen and (min-width: 1080px) {
+    .paging-wrap > li {
+        margin: 0px 6px;
+    }
+}
+
+.paging-item-selected {
+    cursor: pointer;
+    border-radius: 8px;
+    min-width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    list-style: none;
+    float: left;
+    border: 1px solid #d9d9d9;
+    background-color:#336699;
+    margin-right: 8px;
+}
+
+.paging-item-selected a {
+    color: #fff !important;
+}
+
+.paging-item {
+    cursor: pointer;
+    border-radius: 8px;
+    min-width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    list-style: none;
+    float: left;
+    border: 1px solid #d9d9d9;
+    background-color: #fff;
+    margin-right: 8px;
+}
+
+@media only screen and (min-width: 1080px) {
+    .paging-wrap > li a {
+        padding-left: 7px;
+        padding-right: 7px;
+        align-items: flex-end;
+        font-size: 14px;
+        line-height: 24px;
+        letter-spacing: -0.015em;
+    }
+}
+
+.paging-wrap > li a {
+    padding-left: 3px;
+    padding-right: 3px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    white-space: nowrap;
+    font-size: 14px;
+    line-height: 19px;
+    letter-spacing: -0.01em;
+    color: rgb(158, 158, 158);
+}
+
+.paging-item:hover {
+    background-color:rgb(245, 239, 239);
+}
+
+.next svg {
+    width: 1em;
+    height: 1em;
+}
+
+.prev svg {
+    width: 1em;
+    height: 1em;
+}
+
+@media only screen and (min-width: 1080px) {
+    .search-container {
+        margin-bottom: 56px;
+    }
+}
+
+@media all and (max-width: 420px) {
+    .side-box {width: 85px}
+}

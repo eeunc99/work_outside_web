@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.app.work.mapper.main.MainMapper">
+    <select id="toDay" resultType="String">
+        select to_char(current_date, 'YYYY"년" MM"월" DD"일"') as to_day
+    </select>
+
+    <select id="mainList" resultType="listVo">
+        select *
+        from (
+             select tw.work_number as workNumber,
+                    CASE WHEN EXTRACT(HOUR FROM tw.work_start_time)
+                    <![CDATA[
+                        < 12 THEN '오전'
+                    ]]>
+                    else '오후'
+                        end || ' ' || to_char(tw.work_start_time, 'HH24:MI') as work_start_time ,
+                    case
+                    when extract(hour
+                    from
+                    tw.work_real_start_time)
+                    <![CDATA[ < 12 then '오전' ]]>
+                    else '오후'
+                    end || ' ' || to_char(tw.work_real_start_time,
+                    'HH24:MI') as work_real_start_time ,
+                    CASE WHEN EXTRACT(HOUR FROM tw.work_predict_time)
+                    <![CDATA[
+                        < 12 THEN '오전'
+                    ]]>
+                    else '오후'
+                        end || ' ' || to_char(tw.work_predict_time, 'HH24:MI') as workPredictTime ,
+                    tw.work_start_time as work_start_time2,
+                    tw.work_end_time as workEndTime, tw.work_detail as workDetail, tw.work_status as workStatus, tm.member_number as memberNumber,
+                    tm.member_name as memberName, tm.member_rank as memberRank, tw2.workplace_name as workPlaceName, tw.work_title,
+                    ROW_NUMBER() OVER (PARTITION BY tm.member_number ORDER BY work_start_time ASC) as row_num
+             from tbl_work tw
+                      join tbl_member tm
+                           on tw.member_number = tm.member_number
+                      join tbl_workplace tw2
+                           on tw.workplace_number = tw2.workplace_number
+             where (work_status = '진행중' or work_status = '이동중') and ((now() + interval '2 hours' >= tw.work_start_time) or (now() + interval '2 hours' >= tw.work_real_start_time))
+             ) as ranked_work
+        where row_num = 1
+        order by work_start_time2 asc
+    </select>
+
+    <select id="vacationMember" resultType="listVo">
+        select member_name, member_use
+        from tbl_member
+        where member_use = 'V'
+    </select>
+
+</mapper>

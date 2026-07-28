@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>통계</title>
+    <link rel="stylesheet" th:href="@{/css/fragments/header.css}">
+    <link rel="stylesheet" th:href="@{/css/common/components.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments/side.css}">
+    <link rel="stylesheet" th:href="@{/css/statistics/statistics.css}">
+    <link rel="stylesheet" th:href="@{/css/graph/graph.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/js/plugins/chart/jquery.jqplot.min.css}">
+</head>
+
+<body>
+<header class="header"  th:replace="fragments/header :: header"></header>
+    <!-- 부서 관리자 또는 팀장 버전 -->
+    <div class="main">
+
+        <!-- 사이드 시작 -->
+        <!-- side.html 추가하기 -->
+        <div class="side"  th:replace="fragments/side :: side"></div>
+        <!-- 사이드 끝 -->
+
+        <input type="hidden" class="sessionMemberNumber" th:value="${session.sessionNumber}"/>
+        <input type="hidden" class="sessionMemberRank" th:value="${session.memberRank}"/>
+        <!-- 메인 시작 -->
+        <div class="main-box">
+            <!-- 페이지 제목 -->
+            <div class="title">
+                <h2>통계</h2>
+            </div>
+            <!-- 페이지 제목 끝 -->
+
+            <!-- 리스트 시작 -->
+            <div class="st-list">
+
+                <!-- 검색 요소 -->
+                <div class="btn-main">
+                    <!-- 소속 -->
+                    <th:block th:if="${session.memberRank != '매니저'}">
+                        <th:block th:if="${session.memberRank != '수석 매니저'}">
+                            <li class="team-check">
+                                <select name="" class="wo-list" id="team-list">
+                                    <option value="">소속을 선택해주세요</option>
+                                </select>
+                            </li>
+                        </th:block>
+
+                        <!-- 직원 이름 -->
+                        <li class="name-check">
+                            <select name="" id="name-list" class="wo-list">
+                                <option value="">이름을 선택해주세요</option>
+                            </select>
+                        </li>
+                    </th:block>
+                    <!-- 근무지 -->
+                    <li class="wo-check">
+                        <select name="" class="wo-list" id="workplace-list">
+                            <option value="">근무지를 선택해주세요</option>
+                        </select>
+                    </li>
+
+                    <!-- 날짜 -->
+                    <li class="calender">
+                        <input type="date" placeholder="시작 날짜를 입력해주세요." id="work-start-time"> ~ <input type="date" placeholder="종료 날짜를 입력해주세요." id="work-end-time">
+                    </li>
+
+                    <div class="btn-list">
+                        <!-- 검색 및 그래프 버튼 -->
+                        <li><button class="submit">검색</button></li>
+                        <li class="submit-btn"><button class="graph" type="button">그래프</button></li>
+                        <li class="excel-btn"><button class="excel" type="button">엑셀</button></li>
+                    </div>
+                </div>
+                <!-- 검색 요소 끝 -->
+
+                <!-- 통계 리스트 시작 -->
+                <div class="list-main-box">
+                    <div class="st-list-box">
+                        <li class="name2">이름</li>
+                        <li class="team2">소속</li>
+                        <li class="wo2">근무지</li>
+                        <li class="start-time2">시작 시간</li>
+                        <li class="end-time2">종료 시간</li>
+                        <li class="tt2">소요 시간</li>
+                    </div>
+                    <div th:if="${pageDTO.total == 0}" class="list-empty">데이터가 없습니다.</div>
+
+                </div>
+                <!-- 통계 리스트 끝 -->
+                <!-- 페이징 -->
+                <div class="paging-wrapper">
+                    <ul class="paging-wrap">
+                        <li th:if="${pageDTO.prev}" class="paging-prev-wrap" title="이전 페이지">
+                            <a th:href="@{/statistics/statistics} + '?page=' + ${pageDTO.pageStart - 1} + '&workStartTime=&workEndTime=&workplaceNumber=&memberNumber='" class="prev-btn">
+                                <div class="prev">
+                                    <svg viewBox="0 0 48 48">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M32.8912 45.3014L12 23.913L32.8912 2.52471C33.5866 1.8251 34.7804 1.8251 35.4777 2.52471C36.1741 3.22333 36.1741 4.42368 35.4777 5.22224L17.1731 23.913L35.4777 42.7018C36.1741 43.4024 36.1741 44.6018 35.4777 45.4013C35.0788 45.8011 34.6819 46 34.1845 46C33.7855 45.9011 33.2881 45.7002 32.8912 45.3014Z"></path>
+                                    </svg>
+                                </div>
+                            </a>
+                        </li>
+                        <th:block th:each="page:${#numbers.sequence(pageDTO.pageStart, pageDTO.pageEnd)}">
+                            <li th:if="${pageDTO.criteria.pageNum == page}" title="1" class="paging-item-selected" tabindex="0">
+                                <a rel="nofollow" th:text="${page}">1</a>
+                            </li>
+                            <li th:if="${pageDTO.criteria.pageNum != page && pageDTO.total != 0}" title="2" class="paging-item" tabindex="0">
+                                <a th:href="@{/statistics/statistics} + '?page=' + ${page} + '&workStartTime=&workEndTime=&workplaceNumber=&memberNumber='" rel="nofollow" th:text="${page}" class="number-btn">2</a>
+                            </li>
+                        </th:block>
+                        <li th:if="${pageDTO.next}" title="다음 페이지" tabindex="0" class="paging-next" aria-disabled="false">
+                            <a th:href="@{/statistics/statistics} + '?page=' + ${pageDTO.pageEnd + 1} + '&workStartTime=&workEndTime=&workplaceNumber=&memberNumber='" class="next-btn">
+                                <div class="next">
+                                    <svg viewBox="0 0 48 48">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M13.9071 46C13.4118 46 12.9164 45.8001 12.6192 45.4003C11.9257 44.7007 11.9257 43.5014 12.6192 42.7019L30.8493 24.0125L12.5201 5.22317C11.8266 4.52357 11.8266 3.32425 12.5201 2.5247C13.2136 1.8251 14.3034 1.8251 15.096 2.5247L36 24.0125L15.195 45.4003C14.7988 45.8001 14.3034 46 13.9071 46Z"></path>
+                                    </svg>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            <!-- 리스트 끝 -->
+            </div>
+        </div>
+    </div>
+
+<!--그래프 보기 팝업창 띄우기-->
+<div class="modal inmodal" id="modalStatGraph" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog2">
+        <div class="modal-content animated fadeIn" id="graph_view">
+            <div class="modal-header" style="cursor: move;">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">그래프</h4>
+            </div>
+            <div class="modal-body">
+
+                <!-- 일단 조회조건은 없는데 데이터가 뭐가 있어야하는지 분석해야해서 두개 남겨놓음 -->
+                <select class="form-control dept_form2 m-t" name="team_name" style="display: none">
+
+                </select>
+
+                <select class="form-control dept_form3 m-t" name="data_type" style="display:none;">
+                </select>
+
+                <div class="colRight"><span id="rec_date1">2023-10-18</span> ~ <span id="rec_date2">2023-10-19</span> <span>조회</span></div>
+
+                <div class="tableRadius conSize b-t" style="padding: 20px 20px 10px 20px;">
+                    <div id="chart" style="height: 400px;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+<!--그래프 보기 팝업창 띄우기 끝-->
+
+<!-- 모달 시작 -->
+<!-- 일정 확인 모달 -->
+<div class="modal-container modal-container-popup">
+    <div class="modal3" style="height: auto; width: 770px; min-height: 400px;">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-title" style="margin-bottom: 30px; margin-top: 10px;">
+                <span><span class="modal-name" style="font-size: 20px; font-weight: bold;"/> 일정 상세</span>
+                <div class="modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" data-name="Capa 1" id="Capa_1" viewBox="0 0 20 19.84">
+                        <path d="M10.17,10l3.89-3.89a.37.37,0,1,0-.53-.53L9.64,9.43,5.75,5.54a.37.37,0,1,0-.53.53L9.11,10,5.22,13.85a.37.37,0,0,0,0,.53.34.34,0,0,0,.26.11.36.36,0,0,0,.27-.11l3.89-3.89,3.89,3.89a.34.34,0,0,0,.26.11.35.35,0,0,0,.27-.11.37.37,0,0,0,0-.53Z"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="modal-major-content" style="padding-left: 10px;">
+                <div class="modal-content-div" style="font-size: 15px; margin-bottom: 20px;">
+                    <div class="modal-content-title" style="margin-bottom: 10px;">
+                        <span><span class="check_point">✔️</span> 근무시간</span>
+                    </div>
+                    <div class="modal-content-time-select">
+                        <span class="workStartTime"></span>
+                        <span>부터</span>
+                        <span class="workEndTime"></span>
+                    </div>
+                </div>
+                <div class="modal-content-div" style="font-size: 15px; margin-bottom: 20px;">
+                    <div class="modal-content-title" style="margin-bottom: 10px;">
+                        <span><span class="check_point">✔️</span> 근무지</span>
+                    </div>
+                    <div class="modal-content-workplace-select">
+                        <span class="work1"></span>
+                    </div>
+                </div>
+                <div class="modal-content-div" style="font-size: 15px; margin-bottom: 20px;">
+                    <div class="modal-content-title" style="margin-bottom: 10px;">
+                        <span><span class="check_point">✔️</span> 근무 내용</span>
+                    </div>
+                    <div class="modal-content-work-title" style="font-size: 20px; font-weight: bold;">
+                        <span class="workTitle"></span>
+                    </div>
+                    <div class="modal-content-work-textarea" style="word-break: break-word; font-size: 15px; line-height: 40px;">
+                        <span class="workDT2" style="white-space: pre-line;"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 일정 확인 모달 끝 -->
+
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="/js/plugins/bootstrap.js"></script>
+<script type="text/javascript" src="/js/plugins/chart/jquery.jqplot.min.js"></script>
+<script type="text/javascript" src="/js/plugins/chart/plugins/jqplot.highlighter.min.js"></script>
+<script type="text/javascript" src="/js/plugins/chart/plugins/jqplot.cursor.min.js"></script>
+<script type="text/javascript" src="/js/plugins/chart/plugins/jqplot.barRenderer.min.js"></script>
+<script type="text/javascript" src="/js/plugins/chart/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+<script type="text/javascript" src="/js/plugins/chart/plugins/jqplot.pointLabels.min.js"></script>
+<script th:inline="javascript">
+    let statistics = [[${statisticsVOS}]];
+    let workplaces = [[${workplaceDTOS}]];
+    let members = [[${memberVOS}]];
+</script>
+<script src="/js/statistics/statistics-common.js"></script>
+<script src="/js/header.js"></script>
+<script src="/js/side.js"></script>
+<script src="/js/statistics/statistics.js"></script>
+<script src="/js/statistics/modal.js"></script>
+</html>

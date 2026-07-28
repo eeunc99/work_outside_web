@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>휴가 관리</title>
+    <link rel="stylesheet" th:href="@{/css/fragments/header.css}">
+    <link rel="stylesheet" th:href="@{/css/common/components.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments/side.css}">
+    <link rel="stylesheet" th:href="@{/css/modal/department_mgmt_modal.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/vacation_mgmt.css}">
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+    <link rel="manifest" th:href="@{/manifest.json}">
+    <link rel="apple-touch-icon" th:href="@{/image/icon-192.png}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#336699">
+    <script th:src="@{/js/pwa-register.js}"></script>
+</head>
+<body>
+<header class="header" th:replace="fragments/header :: header"></header>
+<div class="main">
+    <div class="side" th:replace="fragments/side :: side"></div>
+
+    <div class="main-box">
+        <div class="title">
+            <h2>관리자</h2>
+        </div>
+
+        <input type="hidden" id="work-start-time"/>
+        <input type="hidden" id="work-end-time"/>
+
+        <!-- 서브 페이지 시작 -->
+        <div class="sub-page">
+            <li onclick="javascript: location.href='/admin/user-mgmt';">사원 관리</li>
+            <li onclick="javascript: location.href='/admin/department-mgmt';">부서 관리</li>
+            <li onclick="javascript: location.href='/admin/workplace-mgmt';">근무지 관리</li>
+            <li onclick="javascript: location.href='/admin/work-mgmt?workStartTime=' + $('#work-start-time').val() + '&workEndTime=' + $('#work-end-time').val();">근무 관리</li>
+            <li id="click2" onclick="javascript: location.href='/admin/vacation-mgmt';">휴가 관리</li>
+            <li onclick="javascript: location.href='/admin/widget-token-mgmt';">위젯 토큰</li>
+        </div>
+        <!-- 서브 페이지 끝 -->
+
+        <!-- 이름 검색 -->
+        <div class="vacation-search">
+            <input type="text" class="vacation-search-input" placeholder="이름 검색">
+            <button type="button" class="vacation-search-btn row-primary-btn">검색</button>
+        </div>
+
+        <!-- 사원 리스트 (클릭 시 휴가 내역 펼침) -->
+        <div class="va-list">
+            <div class="va-list-head">
+                <span class="va-name">이름</span>
+                <span class="va-team">소속</span>
+                <span class="va-remain">잔여</span>
+                <span class="va-carry">이월</span>
+            </div>
+            <div class="vacation-empty list-empty" style="display:none;">사원이 없습니다.</div>
+            <div class="member-list"></div>
+        </div>
+    </div>
+</div>
+
+<!-- 휴가 등록/수정 모달 -->
+<div class="modal-container">
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-title">
+                <span class="vacation-modal-title-text">휴가 등록</span>
+                <div class="modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 19.84">
+                        <path d="M10.17,10l3.89-3.89a.37.37,0,1,0-.53-.53L9.64,9.43,5.75,5.54a.37.37,0,1,0-.53.53L9.11,10,5.22,13.85a.37.37,0,0,0,0,.53.34.34,0,0,0,.26.11.36.36,0,0,0,.27-.11l3.89-3.89,3.89,3.89a.34.34,0,0,0,.26.11.35.35,0,0,0,.27-.11.37.37,0,0,0,0-.53Z" />
+                    </svg>
+                </div>
+            </div>
+            <div class="modal-major-content">
+                <input type="hidden" class="vacation-number">
+                <input type="hidden" class="vacation-target-member-number">
+
+                <span class="department-name-text">대상자</span>
+                <span class="vacation-member-display-name"></span>
+
+                <div class="vacation-member-remain" style="display:none;">
+                    <span class="badge badge-on vacation-remain-badge"></span>
+                    <span class="badge badge-off vacation-carryover-badge"></span>
+                </div>
+
+                <span class="department-name-text">구분</span>
+                <select class="vacation-check-select">
+                    <option value="O">연차</option>
+                    <option value="H">반차</option>
+                    <option value="N">야간 후 휴식</option>
+                </select>
+
+                <div class="modal-content-time-select only_vacation">
+                    <input type="date" class="vacation_st_date" name="vacation_st_date" id="vacation_st_date">
+                    <span> 부터 </span>
+                    <input type="date" class="vacation_end_date" name="vacation_end_date" id="vacation_end_date">
+                </div>
+
+                <div class="modal-content-time-select half_vacation">
+                    <input type="text" class="datetimepicker" name="vacation_st_date" id="vacation_st_date2" readonly style="background-color: white;">
+                    <span> 부터 </span>
+                    <input type="text" class="datetimepicker" name="vacation_end_date" id="vacation_end_date2" readonly style="background-color: white;">
+                </div>
+            </div>
+            <div class="modal-button">
+                <button type="button" class="modal-btn vacation-save-btn">저장</button>
+                <button type="button" class="modal-btn modal-real-close">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 휴가 삭제 모달 -->
+<div class="modal-container">
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-major-content">
+                <span class="department-name-text" style="margin-right: 0;">해당 휴가를 삭제하시겠습니까?</span>
+            </div>
+            <div class="modal-button">
+                <button type="button" class="modal-btn vacation-delete-confirm-btn" style="background-color: rgb(252 82 48);">삭제</button>
+                <button type="button" class="modal-btn modal-real-close">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script th:inline="javascript">
+    let members = [[${memberVOS}]];
+</script>
+<script src="/js/admin/admin-common.js"></script>
+<script src="/js/header.js"></script>
+<script src="/js/side.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script src="/js/admin/vacation_mgmt.js"></script>
+</html>
