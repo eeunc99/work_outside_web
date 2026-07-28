@@ -2,29 +2,45 @@
 
 사외 근무(외근) 관리 시스템 - Spring Boot 기반 웹 애플리케이션
 
+## 주요 기능
+
+### 로그인/세션
+- 세션 기반 로그인, `adminAccess` 세션 속성으로 관리자 페이지 접근을 별도 제어(`AdminInterceptor`)
+- 앱 쿠키 이름을 별도로 지정해 다른 사내 시스템과 동시 로그인 시 세션 충돌 방지
+- PWA 홈 화면으로 재방문할 때 재로그인되지 않도록 세션/쿠키 유지 시간을 7일로 연장
+
+### 외근 현황
+- 부서/기간 등 조건별 외근 리스트 조회, 페이징 처리
+- 모바일 화면에서는 테이블 대신 카드형 레이아웃(이름·외근지 아이콘 + 3줄 스택)으로 전환
+
+### 일정 관리
+- 근무 일정과 휴가 일정을 함께 등록·수정·삭제
+- 이미 진행 중(시작됨)인 일정도 수정 가능하도록 처리
+- 화면 폭 420px 이하에서는 일정 등록/수정 모달이 하단 바텀시트 형태로 표시(터치 타겟 확대 포함)
+
+### 관리자 페이지
+- 사원 관리 / 부서 관리 / 근무지 관리 / 근무 관리 4개 화면
+- 4개 화면의 리스트·페이징·카드 스타일을 `admin-common.css` 공용 컴포넌트로 통일
+- 사원 등록/수정 모달은 그룹별 2열 그리드 레이아웃
+
+### 위젯 토큰 API
+- 외부 위젯이 서버 데이터를 가져다 쓸 수 있도록 발급형 토큰 인증 체계 제공
+- 관리자 페이지에서 토큰 발급 / 목록 조회 / 폐기 가능
+- `WidgetTokenInterceptor`가 요청마다 토큰과 스코프(READ / READ_WRITE)를 검증
+- `GET /api/widget/today` — 로그인한 사원의 오늘 일정 요약 조회(READ 스코프)
+- 업무 시작/완료 처리 API는 READ_WRITE 스코프로 제한(현재 비활성 상태로 코드에 보류)
+
+### 통계
+- 사원/부서/기간별 통계 화면 제공
+- 엑셀(xls/xlsx) 다운로드 기능(Apache POI), 업무 제목까지 포함해 출력
+
+### PWA
+- `manifest.json`, `sw.js`로 홈 화면 추가 및 오프라인 캐싱 지원
+
 ## 기술 스택
 
 - Java 11, Spring Boot 2.7.12
-- MyBatis (PostgreSQL)
+- MyBatis + PostgreSQL (log4jdbc로 쿼리 로깅)
 - Thymeleaf
+- Apache POI (엑셀 다운로드)
 - Gradle
-
-## 실행 방법
-
-1. PostgreSQL DB를 준비합니다.
-2. `src/main/resources/application-local.properties`에서 아래 값을 본인 환경에 맞게 채워주세요.
-
-   ```properties
-   server.ip = localhost
-   spring.datasource.url=jdbc:log4jdbc:postgresql://YOUR_DB_HOST/work_outside?charSet=UTF-8
-   spring.datasource.username=YOUR_DB_USER
-   spring.datasource.password=YOUR_DB_PASSWORD
-   ```
-
-3. 빌드 및 실행
-
-   ```bash
-   ./gradlew bootRun
-   ```
-
-기본 포트는 8080입니다.
