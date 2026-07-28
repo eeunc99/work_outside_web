@@ -9,6 +9,6 @@ create table tbl_member_permission (
 
 -- 기존 코드에 하드코딩되어 있던 예외(옥민정, 최예은, 정현진)를 동일하게 데이터로 이관
 insert into tbl_member_permission (member_number, permission_code)
-select member_number, 'ADMIN_ACCESS' from tbl_member where member_name in ('옥민정', '최예은', '정현진')
+select member_number, 'ADMIN_ACCESS' from tbl_member where member_name in ('A', 'B', 'C')
 union all
-select member_number, 'LIST_ALL_TEAMS' from tbl_member where member_name in ('옥민정', '최예은', '정현진');
+select member_number, 'LIST_ALL_TEAMS' from tbl_member where member_name in ('A', 'B', 'C');
